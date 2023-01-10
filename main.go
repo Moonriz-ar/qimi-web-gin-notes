@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,13 @@ type msg struct {
 	BookName    string `json:"bookName"`
 	PublishDate int    `json:"publishDate"`
 	Author      string `json:"author"`
+}
+
+// ** gin ShouldBind **
+
+type UserInfo struct {
+	Name string `json:"name" form:"name" binding:"required"`
+	Age  int    `json:"age" form:"age" binding:"required"`
 }
 
 func main() {
@@ -82,6 +90,24 @@ func main() {
 			"year":  year,
 			"month": month,
 		})
+	})
+
+	// ** gin ShouldBind **
+
+	// ** bind query parameter, struct shuold have form tag, for example, form:"name"
+	r.POST("/user", func(c *gin.Context) {
+		var u UserInfo // initialize a variable with UserInfo type
+		if err := c.ShouldBind(&u); err == nil {
+			fmt.Printf("user info: %#v\n", u)
+			c.JSON(http.StatusOK, gin.H{
+				"name": u.Name,
+				"age":  u.Age,
+			})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+		}
 	})
 
 	// start the service
