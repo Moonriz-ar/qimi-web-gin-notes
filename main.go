@@ -70,6 +70,20 @@ func main() {
 		})
 	})
 
+	// *** retrieve path (URI) parameter ***
+
+	// the data returned by path parameter is always string type
+	r.GET("/blog/:year/:month", func(c *gin.Context) {
+		// retrieve path (URI) parameter
+		year := c.Param("year")   // type string
+		month := c.Param("month") // type string
+
+		c.JSON(http.StatusOK, gin.H{
+			"year":  year,
+			"month": month,
+		})
+	})
+
 	// start the service
 	r.Run(":9090")
 }
