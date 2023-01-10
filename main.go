@@ -110,6 +110,11 @@ func main() {
 		}
 	})
 
+	// ** Gin redirect **
+	r.GET("/youtubeRedirect", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "https://www.youtube.com/")
+	})
+
 	// start the service
 	r.Run(":9090")
 }
