@@ -1,3 +1,6 @@
 go 1.19
 
-use ./gin-basics
+use (
+	./gin-basics
+	./gin-middleware
+)
